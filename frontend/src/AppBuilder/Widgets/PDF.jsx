@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css'; // Required to fix duplicate text appearing at the bottom from the previous page
-import { debounce } from 'lodash';
+import pdfPageAtScrollPosition from './pdfPageAtScrollPosition';
 // Constants for password prompt reasons (react-pdf v10 / pdfjs v4)
 const PasswordResponses = {
   NEED_PASSWORD: 1,
@@ -19,7 +19,6 @@ const PDF = React.memo(({ styles, properties, width, height, componentName, data
   const [pageNumber, setPageNumber] = useState(null);
   const pageRef = useRef([]);
   const documentRef = useRef(null);
-  const hasScrollRef = useRef(false);
   const [error, setError] = useState(true);
   const [pageLoading, setPageLoading] = useState(true);
   const [hasButtonClicked, setButtonClick] = useState(false);
@@ -40,32 +39,6 @@ const PDF = React.memo(({ styles, properties, width, height, componentName, data
   useEffect(() => {
     setPageLoading(true);
   }, [url]);
-
-  const options = {
-    root: document.querySelector('#pdf-wrapper'),
-    rootMargin: '0px',
-    threshold: 0.7,
-  };
-
-  const trackIntersection = (entries) => {
-    let isCaptured = false;
-    entries.forEach((entry) => {
-      if (entry.isIntersecting && !isCaptured && hasScrollRef.current) {
-        isCaptured = true;
-        const currentPage = parseInt(entry.target.getAttribute('data-page-number'));
-        if (pageNumber !== currentPage) setPageNumber(currentPage);
-      }
-    });
-  };
-
-  useEffect(() => {
-    if (numPages === 0 || numPages === null) return;
-    const observer = new IntersectionObserver(trackIntersection, options);
-    document.querySelectorAll('.react-pdf__Page').forEach((elem) => {
-      if (elem) observer.observe(elem);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [numPages, options]);
 
   useEffect(() => {
     setIsPasswordPromptClosed(false);
@@ -176,10 +149,10 @@ const PDF = React.memo(({ styles, properties, width, height, componentName, data
 
   const handleScroll = () => {
     if (hasButtonClicked) return setButtonClick(false);
-    if (!hasScrollRef.current) hasScrollRef.current = true;
-    debounce(() => {
-      if (hasScrollRef.current) hasScrollRef.current = false;
-    }, 150);
+    if (!numPages || !documentRef.current) return;
+    const { scrollTop, clientHeight } = documentRef.current;
+    const currentPage = pdfPageAtScrollPosition(pageRef.current.slice(0, numPages), scrollTop, clientHeight);
+    if (currentPage !== pageNumber) setPageNumber(currentPage);
   };
 
   return (
