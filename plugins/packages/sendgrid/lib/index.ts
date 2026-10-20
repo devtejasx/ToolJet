@@ -1,6 +1,6 @@
 import { QueryError, QueryResult, QueryService } from '@tooljet-plugins/common';
 import sgMail from '@sendgrid/mail';
-import { EmailOptions, SourceOptions, QueryOptions } from './types';
+import { EmailOptions, SourceOptions, QueryOptions, FileAttachment } from './types';
 
 export default class SendGridQueryService implements QueryService {
   async run(sourceOptions: SourceOptions, queryOptions: QueryOptions, dataSourceId: string): Promise<QueryResult> {
@@ -29,6 +29,16 @@ export default class SendGridQueryService implements QueryService {
       sendgridEmailOptions.html = queryOptions.html;
     }
 
+    const attachments = parseAttachments(queryOptions.attachment_array);
+    if (attachments.length > 0) {
+      sendgridEmailOptions.attachments = attachments.map((file) => ({
+        content: getBase64Content(file),
+        filename: file.name,
+        ...(file.type && { type: file.type }),
+        disposition: 'attachment',
+      }));
+    }
+
     try {
       result = await sgMail.send(sendgridEmailOptions);
     } catch (error) {
@@ -41,4 +51,18 @@ export default class SendGridQueryService implements QueryService {
       data: result,
     };
   }
+}
+
+// Accepts the file picker's `file` value (an array of files), a single file, or the same as a JSON string
+function parseAttachments(attachments: QueryOptions['attachment_array']): FileAttachment[] {
+  if (!attachments) return [];
+
+  const parsed = typeof attachments === 'string' ? JSON.parse(attachments) : attachments;
+  return (Array.isArray(parsed) ? parsed : [parsed]).filter(Boolean);
+}
+
+function getBase64Content(file: FileAttachment): string {
+  const data = file.base64Data ?? file.dataURL ?? '';
+  // Drop the `data:<type>;base64,` prefix if a full data URL was passed
+  return data.startsWith('data:') ? data.slice(data.indexOf(',') + 1) : data;
 }

@@ -42,6 +42,7 @@ Mailgun API key is required to create an Mailgun datasource on ToolJet. You can 
 #### Optional parameters:
 
 - **Body as HTML**
+- **Attachments** - accepts the file picker's file value, e.g. `{{components.filepicker1.file}}`
 
 <img class="screenshot-full" src="/img/datasource-reference/mailgun/mailgunQuery.png" alt="ToolJet - Data source - Mailgun Query" />
 

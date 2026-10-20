@@ -49,6 +49,7 @@ The SendGrid API Datasource supports for interaction with the mail endpoint of t
 
 #### Optional Parameter
 - **Body as HTML**
+- **Attachments** - accepts the file picker's file value, e.g. `{{components.filepicker1.file}}`
 
 <img class="screenshot-full" src="/img/datasource-reference/sendgrid/sendgrid-query-v2.png" alt="ToolJet - Query SendGrid"/>
 

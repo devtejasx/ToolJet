@@ -86,6 +86,17 @@
         "height": "150px",
         "editorType": "extendedSingleLine",
         "lineNumbers": true
+      },
+      "attachment_array": {
+        "label": "Attachments",
+        "key": "attachment_array",
+        "type": "codehinter",
+        "lineNumbers": false,
+        "description": "Field for file attachments",
+        "placeholder": "{{components.filepicker1.file}}",
+        "width": "320px",
+        "height": "36px",
+        "className": "codehinter-plugins"
       }
     }
   }

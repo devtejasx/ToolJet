@@ -1,5 +1,5 @@
 import { QueryError, QueryResult, QueryService } from '@tooljet-plugins/common';
-import { SourceOptions, QueryOptions } from './types';
+import { SourceOptions, QueryOptions, FileAttachment } from './types';
 
 export default class Mailgun implements QueryService {
   async run(sourceOptions: SourceOptions, queryOptions: QueryOptions, dataSourceId: string): Promise<QueryResult> {
@@ -20,6 +20,10 @@ export default class Mailgun implements QueryService {
     if (queryOptions.html && queryOptions.html.length > 0) {
       form.append('html', queryOptions.html);
     }
+    parseAttachments(queryOptions.attachment_array).forEach((file) => {
+      const content = Buffer.from(getBase64Content(file), 'base64');
+      form.append('attachment', new Blob([content], { type: file.type || 'application/octet-stream' }), file.name);
+    });
 
     try {
       switch (operation) {
@@ -47,4 +51,18 @@ export default class Mailgun implements QueryService {
       data: result,
     };
   }
+}
+
+// Accepts the file picker's `file` value (an array of files), a single file, or the same as a JSON string
+function parseAttachments(attachments: QueryOptions['attachment_array']): FileAttachment[] {
+  if (!attachments) return [];
+
+  const parsed = typeof attachments === 'string' ? JSON.parse(attachments) : attachments;
+  return (Array.isArray(parsed) ? parsed : [parsed]).filter(Boolean);
+}
+
+function getBase64Content(file: FileAttachment): string {
+  const data = file.base64Data ?? file.dataURL ?? '';
+  // Drop the `data:<type>;base64,` prefix if a full data URL was passed
+  return data.startsWith('data:') ? data.slice(data.indexOf(',') + 1) : data;
 }

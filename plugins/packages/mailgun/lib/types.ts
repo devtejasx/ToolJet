@@ -10,6 +10,12 @@ export type SourceOptions = {
   domain: string;
   eu_hosted: boolean;
 };
+export type FileAttachment = {
+  name: string;
+  type?: string;
+  base64Data?: string;
+  dataURL?: string;
+};
 export type QueryOptions = {
   operation: string;
   send_mail_to: string[];
@@ -17,4 +23,5 @@ export type QueryOptions = {
   subject: string;
   text: string;
   html: string;
+  attachment_array?: FileAttachment[] | FileAttachment | string;
 };
