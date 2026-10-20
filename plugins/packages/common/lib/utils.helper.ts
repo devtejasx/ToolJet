@@ -80,7 +80,7 @@ export function isEmpty(value: number | null | undefined | string) {
   return (
     value === undefined ||
     value === null ||
-    !isNaN(value as number) ||
+    (typeof value === 'number' && Number.isNaN(value)) ||
     (typeof value === 'object' && Object.keys(value).length === 0) ||
     (typeof value === 'string' && value.trim().length === 0)
   );
