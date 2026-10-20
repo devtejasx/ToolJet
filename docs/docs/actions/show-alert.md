@@ -9,6 +9,8 @@ You can set a custom **message** for the alert and choose a particular alert typ
 
 There are 4 types of alert messages - **Info**, **Success**, **Warning**, and **Error**.
 
+**Duration** is optional: enter the number of seconds the alert stays on screen, e.g. `10`. When it is empty, the alert closes after its default time.
+
 Debounce field is empty by default, you can enter a numerical value to specify the time in milliseconds after which the action will be performed. ex: `300`
 
 :::info

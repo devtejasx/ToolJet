@@ -583,17 +583,21 @@ export const createEventsSlice = (set, get) => ({
               let message = getResolvedValue(event.message, customVariables, moduleId);
               if (typeof message === 'object') message = JSON.stringify(message);
               if (Number.isNaN(message)) message = '';
+              // Optional duration in seconds; when empty the toast keeps its default timeout
+              const duration = Number(getResolvedValue(event.duration, customVariables, moduleId));
+              const toastOptions = duration > 0 ? { duration: duration * 1000 } : {};
 
               switch (event.alertType) {
                 case 'success':
                 case 'error':
-                  toast[event.alertType](message);
+                  toast[event.alertType](message, toastOptions);
                   break;
                 case 'info':
-                  toast(message);
+                  toast(message, toastOptions);
                   break;
                 case 'warning':
                   toast(message, {
+                    ...toastOptions,
                     icon: '⚠️',
                   });
                   break;
@@ -1243,11 +1247,12 @@ export const createEventsSlice = (set, get) => ({
         }
       };
 
-      const showAlert = (alertType = '', message = '') => {
+      const showAlert = (alertType = '', message = '', duration) => {
         const event = {
           actionId: 'show-alert',
           alertType,
           message,
+          duration,
         };
         return executeAction(event, mode, {}, moduleId);
       };

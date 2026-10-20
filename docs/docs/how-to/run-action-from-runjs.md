@@ -241,6 +241,8 @@ actions.showAlert('<alert type>' , '<message>' )
 
 Available alert types are `info`, `success`, `warning`, and `danger`.
 
+Pass a duration in seconds as the third argument to keep the alert on screen longer, e.g. `actions.showAlert('info', 'Report is ready', 10)`.
+
 Example:
 ```js
 actions.showAlert('error' , 'This is an error' )

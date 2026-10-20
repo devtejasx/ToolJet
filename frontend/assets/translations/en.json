@@ -212,6 +212,7 @@
                 "actionOptions": "Action Options",
                 "message": "Message",
                 "alertType": "Alert Type",
+                "alertDuration": "Duration (seconds)",
                 "url": "URL",
                 "modal": "Modal",
                 "text": "Text",

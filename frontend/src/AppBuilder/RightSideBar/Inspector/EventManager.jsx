@@ -711,6 +711,22 @@ export const EventManager = ({
                     </RocketSelect>
                   </div>
                 </FieldRow>
+                <FieldRow
+                  label={t('editor.inspector.eventManager.alertDuration', 'Duration (seconds)')}
+                  dataCy="alert-duration-label"
+                >
+                  <div data-cy="alert-duration-input-field">
+                    <CodeHinter
+                      type="basic"
+                      theme={darkMode ? 'monokai' : 'default'}
+                      initialValue={event.duration}
+                      onChange={(value) => handlerChanged(index, 'duration', value)}
+                      usePortalEditor={false}
+                      component={component}
+                      placeholder="Default"
+                    />
+                  </div>
+                </FieldRow>
               </>
             )}
 
