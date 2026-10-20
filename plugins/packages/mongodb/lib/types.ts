@@ -25,6 +25,7 @@ export type SourceOptions = {
   ssh_dst_host?: string;
   ssh_dst_port?: number;
   ssh_local_port?: number;
+  allow_dynamic_connection_parameters?: boolean;
 };
 export type QueryOptions = {
   operation: string;
@@ -38,4 +39,5 @@ export type QueryOptions = {
   replacement: string;
   operations: string;
   pipeline: string;
+  database?: string;
 };

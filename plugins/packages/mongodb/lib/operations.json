@@ -12,6 +12,17 @@
       "key": "operation",
       "type": "dropdown-component-flip",
       "description": "Single select dropdown for operation",
+      "commonFields": {
+        "database": {
+          "label": "Database",
+          "placeholder": "Leave empty to use default",
+          "key": "database",
+          "type": "codehinter",
+          "description": "Enter database name",
+          "height": "150px",
+          "shouldRenderTheProperty": "allow_dynamic_connection_parameters"
+        }
+      },
       "list": [
         {
           "name": "List collections",

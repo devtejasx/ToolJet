@@ -149,7 +149,11 @@ function safeDecode(value: string): string {
 
 export default class MongodbService implements QueryService {
   async run(sourceOptions: SourceOptions, queryOptions: QueryOptions, dataSourceId: string): Promise<QueryResult> {
-    const { db, close } = await this.getConnection(sourceOptions);
+    // Only the database can be overridden; the connection itself (and its auth database) stays as configured
+    const databaseOverride = sourceOptions.allow_dynamic_connection_parameters
+      ? queryOptions.database?.trim()
+      : undefined;
+    const { db, close } = await this.getConnection(sourceOptions, databaseOverride);
     let result = {};
     const operation = queryOptions.operation;
 
@@ -408,7 +412,7 @@ export default class MongodbService implements QueryService {
     return connectionOptions;
   }
 
-  async getConnection(sourceOptions: SourceOptions): Promise<any> {
+  async getConnection(sourceOptions: SourceOptions, databaseOverride?: string): Promise<any> {
     let db = null;
     let client;
     let sshResources: { ssh: SSHClient; server: net.Server } | null = null;
@@ -496,7 +500,7 @@ export default class MongodbService implements QueryService {
 
       client = new MongoClient(uri, { ...clientOptions, ...this.connectionOptions(sourceOptions) });
       await client.connect();
-      db = client.db(database);
+      db = client.db(databaseOverride || database);
     } else {
       const connStr = sourceOptions.connection_string.trim();
       const explicitFormat = sourceOptions.connection_format;
@@ -600,7 +604,7 @@ export default class MongodbService implements QueryService {
       }
       client = new MongoClient(finalUri, { ...clientOptions, ...this.connectionOptions(sourceOptions) });
       await client.connect();
-      db = client.db(finalDb);
+      db = client.db(databaseOverride || finalDb);
     }
     return {
       db,

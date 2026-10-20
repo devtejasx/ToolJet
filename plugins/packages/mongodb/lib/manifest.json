@@ -60,6 +60,12 @@
         "items": { "type": "string" }
       }
     },
+    "allow_dynamic_connection_parameters": {
+      "type": "boolean",
+      "title": "Allow dynamic connection parameters",
+      "description": "Turning this on will allow dynamically setting the database from application",
+      "default": false
+    },
     "use_ssl": {
       "type": "boolean",
       "title": "SSL/TLS",
@@ -301,6 +307,15 @@
         "label": "Connection options",
         "widget": "react-component-headers"
       },
+      "allow_dynamic_connection_parameters": {
+        "order": 67,
+        "$ref": "#/properties/allow_dynamic_connection_parameters",
+        "key": "allow_dynamic_connection_parameters",
+        "label": "Allow dynamic connection parameters",
+        "description": "Turning this on will allow dynamically setting the database from application",
+        "widget": "toggle-v2",
+        "help_text": "Enable this to override the default database at query runtime."
+      },
       "use_ssl": {
         "order": 70,
         "$ref": "#/properties/use_ssl",
@@ -521,6 +536,15 @@
         "key": "connection_options",
         "label": "Connection options",
         "widget": "react-component-headers"
+      },
+      "allow_dynamic_connection_parameters": {
+        "order": 67,
+        "$ref": "#/properties/allow_dynamic_connection_parameters",
+        "key": "allow_dynamic_connection_parameters",
+        "label": "Allow dynamic connection parameters",
+        "description": "Turning this on will allow dynamically setting the database from application",
+        "widget": "toggle-v2",
+        "help_text": "Enable this to override the default database at query runtime."
       },
       "use_ssl": {
         "order": 70,

@@ -72,6 +72,10 @@ For example: `mongodb+srv://tooljettest:dummypassword@cluster0.urul7.mongodb.net
 Query results can be transformed using transformations. Read our transformations documentation to see how: [link](/docs/tutorial/transformations)
 :::
 
+### Choosing the database at runtime
+
+Turn on **Allow dynamic connection parameters** in the data source configuration to show a **Database** field in every MongoDB query. Set it to a static name or to a value such as `{{globals.currentUser.groups[0]}}`; when it is left empty, the query uses the database from the data source configuration. The connection itself, including credentials and the authentication database, is not changed.
+
 <div style={{paddingTop:'24px'}}>
 
 ## Supported Operations
