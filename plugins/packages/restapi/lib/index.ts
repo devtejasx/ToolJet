@@ -455,16 +455,23 @@ export default class RestapiQueryService implements QueryService {
   }
 
   private isBinary(contentType: string) {
-    const binaryPrefixes = ['application/', 'image/'];
-    const binaryApplicationTypes = ['application/pdf', 'application/zip'];
+    // Compare the bare media type: servers often send parameters, e.g. `application/pdf; charset=binary`
+    const mediaType = (contentType ?? '').split(';')[0].trim().toLowerCase();
+    const binaryPrefixes = ['image/', 'audio/', 'video/'];
+    const binaryApplicationTypes = [
+      'application/pdf',
+      'application/zip',
+      'application/x-zip-compressed',
+      'application/gzip',
+      'application/x-gzip',
+      'application/x-tar',
+      'application/octet-stream',
+    ];
 
-    for (const binaryPrefix of binaryPrefixes) {
-      if (contentType?.startsWith(binaryPrefix)) {
-        if (binaryPrefix === 'application/') return binaryApplicationTypes.includes(contentType);
-        return true;
-      }
-    }
-    return false;
+    return (
+      binaryPrefixes.some((binaryPrefix) => mediaType.startsWith(binaryPrefix)) ||
+      binaryApplicationTypes.includes(mediaType)
+    );
   }
 
   authUrl(sourceOptions: SourceOptions): string {
