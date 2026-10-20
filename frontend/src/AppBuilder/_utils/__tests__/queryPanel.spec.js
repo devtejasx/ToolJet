@@ -1,4 +1,4 @@
-import { getQueryVariables } from '../queryPanel';
+import { getQueryVariables, withJsArguments } from '../queryPanel';
 
 const emptyMappings = { components: {}, queries: {} };
 
@@ -61,5 +61,49 @@ describe('getQueryVariables', () => {
     expect(getQueryVariables(options, state, emptyMappings)).toEqual({
       '{{components.dropdown1.value  ??  1}}': 2,
     });
+  });
+});
+
+describe('withJsArguments', () => {
+  // Minimal stand-in for a Pyodide PyProxy: toJs() turns Python dicts into Maps
+  const pyProxy = (jsValue) => ({ toJs: () => jsValue });
+
+  test('converts Python lists of dicts into plain arrays of objects', () => {
+    const generateFile = jest.fn();
+    const actions = withJsArguments({ generateFile });
+
+    actions.generateFile(
+      'runpycsv',
+      'csv',
+      pyProxy([
+        new Map([
+          ['name', 'John'],
+          ['email', 'john@tooljet.com'],
+        ]),
+      ])
+    );
+
+    expect(generateFile).toHaveBeenCalledWith('runpycsv', 'csv', [{ name: 'John', email: 'john@tooljet.com' }]);
+  });
+
+  test('converts nested dicts and sets', () => {
+    const setVariable = jest.fn();
+
+    withJsArguments({ setVariable }).setVariable('user', pyProxy(new Map([['roles', new Set(['admin'])]])));
+
+    expect(setVariable).toHaveBeenCalledWith('user', { roles: ['admin'] });
+  });
+
+  test('passes plain JS arguments through and keeps the return value', () => {
+    const showAlert = jest.fn(() => 'shown');
+
+    expect(withJsArguments({ showAlert }).showAlert('info', 'Saved', 3)).toEqual('shown');
+    expect(showAlert).toHaveBeenCalledWith('info', 'Saved', 3);
+  });
+
+  test('keeps non-function members as they are', () => {
+    const meta = { mode: 'edit' };
+
+    expect(withJsArguments({ meta }).meta).toBe(meta);
   });
 });

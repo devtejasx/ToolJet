@@ -7,7 +7,7 @@ import { dataqueryService, workflowExecutionsService } from '@/_services';
 import moment from 'moment';
 import axios from 'axios';
 import { validateMultilineCode } from '@/_helpers/utility';
-import { convertMapSet, getQueryVariables } from '@/AppBuilder/_utils/queryPanel';
+import { convertMapSet, getQueryVariables, withJsArguments } from '@/AppBuilder/_utils/queryPanel';
 import { queryAbortControllers, isAbortError } from '@/AppBuilder/_utils/queryAbort';
 import { ABORT_UNSUPPORTED_KINDS, defaultSources, TJ_QUERY_ERROR_TYPE } from '@/AppBuilder/QueryManager/constants';
 import { timerRegistry } from '@/AppBuilder/_helpers/timerRegistry';
@@ -1343,7 +1343,7 @@ export const createQueryPanelSlice = (set, get) => ({
             };
           }
 
-          await pyodide.globals.set('actions', actions);
+          await pyodide.globals.set('actions', withJsArguments(actions));
         }
         await pyodide.globals.set('components', resolvedState['components']);
         await pyodide.globals.set('queries', queriesInCurentState);

@@ -196,3 +196,15 @@ export const convertMapSet = (obj) => {
     return obj;
   }
 };
+
+// Lists and dicts that runPy code passes to `actions.*` arrive as Pyodide proxies, which the actions
+// cannot read (generateFile wrote an empty CSV). Convert them like the query result before calling.
+export const withJsArguments = (actions) =>
+  Object.fromEntries(
+    Object.entries(actions).map(([name, action]) => [
+      name,
+      typeof action === 'function'
+        ? (...args) => action(...args.map((arg) => (typeof arg?.toJs === 'function' ? convertMapSet(arg.toJs()) : arg)))
+        : action,
+    ])
+  );
