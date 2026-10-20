@@ -44,16 +44,19 @@ export const processXls = async (base64Str) => {
     // Use XLSX library which supports both XLS and XLSX formats
     const workbook = XLSX.read(binary, { type: 'binary' });
 
-    // Get the first sheet
-    const firstSheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[firstSheetName];
+    // Convert every non-empty sheet to JSON with header row, keyed by its sheet name
+    const sheets = {};
+    workbook.SheetNames.forEach((sheetName) => {
+      const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: '' });
+      if (jsonData.length) sheets[sheetName] = jsonData;
+    });
 
-    // Convert to JSON with header row
-    const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+    // The first sheet used to be the only one parsed and was always exposed as `Sheet1`,
+    // whatever its real name; keep that key so existing apps still find their data.
+    const firstSheetData = sheets[workbook.SheetNames[0]];
+    if (firstSheetData && !('Sheet1' in sheets)) return { Sheet1: firstSheetData, ...sheets };
 
-    if (!jsonData.length) return {};
-
-    return { Sheet1: jsonData };
+    return sheets;
   } catch (error) {
     console.error('Error processing XLS/XLSX:', error);
     toast.error('Failed to parse Excel file.');

@@ -83,7 +83,7 @@ Checkout **[this](/docs/how-to/loading-image-pdf-from-db)** guide to learn how t
 
 | <div style={{ width:"135px"}}> Option </div> | <div style={{ width:"100px"}}> Description </div> |
 |:----------- |:----------- |
-| Parse content | Parse the selected files, supports **CSV**, **xls**, and **xlsx** files. |
+| Parse content | Parse the selected files, supports **CSV**, **xls**, and **xlsx** files. For Excel files, `parsedData` has one key per non-empty sheet (for e.g., `{{components.filepicker1.file[0].parsedData.Orders}}`), and the first sheet is also available as `Sheet1`. |
 | File type | If **Parse content** is enabled, options to auto-detect files and parse content or parse selected file types. |
 
 :::info
