@@ -57,7 +57,8 @@ export async function uploadObject(minioClient: MinioClient, queryOptions: objec
     queryOptions['bucket'],
     queryOptions['objectName'],
     data,
-    queryOptions['contentType'] && { contentType: queryOptions['contentType'] }
+    // minio only treats `Content-Type` as the object's content type; any other key is stored as x-amz-meta-*
+    queryOptions['contentType'] && { 'Content-Type': queryOptions['contentType'] }
   );
 }
 

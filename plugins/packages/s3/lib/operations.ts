@@ -95,8 +95,9 @@ export async function uploadObject(client: S3Client, options: QueryOptions): Pro
     Bucket: options.bucket,
     Key: options.key,
     Body: body,
+    // `encoding` only describes how the input string is decoded into bytes; sending it as the
+    // Content-Encoding header (e.g. `utf8`, `base64`) makes browsers misread the stored object.
     ContentType: options.contentType,
-    ContentEncoding: encoding,
   };
 
   const command = new PutObjectCommand(params);
