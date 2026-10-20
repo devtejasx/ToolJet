@@ -44,6 +44,7 @@ For instance, you can set the `Data` property of a Text component on a card usin
 | Card width  | Set the width of the card. | This property expects a numerical value. By default, the value is set to `{{302}}`. |
 | Card height | Set the width of the card. | This property expects a numerical value. By default, the value is set to `{{100}}`. |
 | Enable add card | This property allows you to show or hide the **+Add Cards** button on the Kanban. | By default its enabled, you can programmatically set value to `{{true}}` or `{{false}}` to enable/disable button by clicking on the **fx** next to it. |
+| Add card button label | The text shown on the add card button. | Defaults to `+ Add Card`; it can be static text or dynamic, e.g. `{{'+ New ' + components.dropdown1.value}}`. |
 | Show delete button | This property allows you to show or hide the **Drop here to delete cards** section at the bottom of the Kanban. | By default its enabled, you can programmatically set value to `{{true}}` or `{{false}}` to enable/disable button by clicking on the **fx** next to it. |
 
 </div>

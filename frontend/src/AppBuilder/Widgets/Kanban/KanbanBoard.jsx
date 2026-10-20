@@ -51,7 +51,8 @@ export function KanbanBoard({ widgetHeight, kanbanProps, parentRef, id, dataCy }
   const { moduleId } = useModuleContext();
   const updateCustomResolvables = useStore((state) => state.updateCustomResolvables, shallow);
   const { properties, fireEvent, setExposedVariable, setExposedVariables, styles } = kanbanProps;
-  const { columnData, cardData, cardWidth, cardHeight, showDeleteButton, enableAddCard, deleteLabel } = properties;
+  const { columnData, cardData, cardWidth, cardHeight, showDeleteButton, enableAddCard, deleteLabel, addCardLabel } =
+    properties;
   const { accentColor } = styles;
   const mode = useStore((state) => state.modeStore.modules[moduleId].currentMode, shallow);
   const [lastSelectedCard, setLastSelectedCard] = useState({});
@@ -456,7 +457,7 @@ export function KanbanBoard({ widgetHeight, kanbanProps, parentRef, id, dataCy }
             onClick={() => enableAddCard && fireEvent('onAddCardClick')}
             data-cy={`${dataCy}-add-card-button`}
           >
-            + Add Card
+            {addCardLabel || '+ Add Card'}
           </button>
         </div>
         {createPortal(

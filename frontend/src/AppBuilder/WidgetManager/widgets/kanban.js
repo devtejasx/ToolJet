@@ -74,6 +74,14 @@ export const kanbanConfig = {
       accordian: 'Board configuration',
     },
     enableAddCard: { type: 'toggle', displayName: 'Enable adding card', accordian: 'Board configuration' },
+    addCardLabel: {
+      type: 'code',
+      displayName: 'Add card button label',
+      validation: {
+        schema: { type: 'string', defaultValue: '+ Add Card' },
+      },
+      accordian: 'Board configuration',
+    },
     showDeleteButton: { type: 'toggle', displayName: 'Enable card deletion zone', accordian: 'Board configuration' },
     deleteLabel: {
       type: 'code',
@@ -228,6 +236,9 @@ export const kanbanConfig = {
       },
       enableAddCard: {
         value: `{{true}}`,
+      },
+      addCardLabel: {
+        value: '+ Add Card',
       },
       showDeleteButton: {
         value: `{{true}}`,
