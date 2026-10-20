@@ -24,6 +24,7 @@ import { getColumnIcon } from './utils';
 import { getSafeRenderableValue } from '@/AppBuilder/Widgets/utils';
 import { useColumnManager, useActionButtonManager, usePopoverState } from './hooks';
 import useStore from '@/AppBuilder/_stores/store';
+import { useModuleId } from '@/AppBuilder/_contexts/ModuleContext';
 import { shallow } from 'zustand/shallow';
 
 // Helper function to get display text for column type
@@ -112,6 +113,9 @@ export const Table = (props) => {
   } = usePopoverState();
 
   const isQueryPaneExpanded = useStore((state) => state.queryPanel.isQueryPaneExpanded, shallow);
+  const moduleId = useModuleId();
+  // Resolves against the app state, so `{{components.toggle1.value}}`-style values work
+  const getResolvedValue = useStore((state) => state.getResolvedValue);
 
   useEffect(() => {
     if (isQueryPaneExpanded && activeColumnPopoverIndex !== null) {
@@ -519,7 +523,7 @@ export const Table = (props) => {
                       <div className="w-100 d-flex custom-gap-4 flex-column" {...droppableProps} ref={innerRef}>
                         {filteredColumns.map((item, index) => {
                           const resolvedItemName = getSafeRenderableValue(resolveReferences(item.name));
-                          const isEditable = resolveReferences(item.isEditable);
+                          const isEditable = getResolvedValue(item.isEditable, {}, moduleId);
                           const columnVisibility = item?.columnVisibility ?? true;
 
                           return (
@@ -805,6 +809,8 @@ export const Table = (props) => {
       paginationOptions,
       layoutPropertyChanged,
       additionalActions,
+      getResolvedValue,
+      moduleId,
     ]
   );
 
