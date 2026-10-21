@@ -14,6 +14,13 @@ function RunjsParameters({ event, darkMode, index, handlerChanged }) {
     return '';
   }
 
+  // Parameters added to the query after this event was set up have no saved value yet;
+  // show the query's default for them, which is also what the query runs with.
+  const getParameterValue = (param) =>
+    event?.parameters && Object.prototype.hasOwnProperty.call(event.parameters, param.name)
+      ? event.parameters[param.name]
+      : param.defaultValue;
+
   const handleChange = (value, param) => {
     const newParams = { ...event?.parameters, [param.name]: value };
     handlerChanged(index, 'parameters', newParams);
@@ -36,7 +43,7 @@ function RunjsParameters({ event, darkMode, index, handlerChanged }) {
             <div className="tw-w-[168px] tw-min-h-8 tw-flex tw-flex-col tw-justify-center">
               <CodeHinter
                 type="basic"
-                initialValue={event.parameters?.[param.name]}
+                initialValue={getParameterValue(param)}
                 onChange={(value) => handleChange(value, param)}
                 usePortalEditor={false}
                 componentName="RunJS Params"
