@@ -22,7 +22,7 @@ export default class StripeQueryService implements QueryService {
 
     // Replace path params of url
     for (const param of Object.keys(pathParams)) {
-      url = url.replace(`{${param}}`, pathParams[param]);
+      url = url.replace(`{${param}}`, () => pathParams[param]);
     }
 
     let response = null;

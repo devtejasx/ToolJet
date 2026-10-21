@@ -765,13 +765,15 @@ export class DataQueriesUtilService implements IDataQueriesUtilService {
                 replacement = replacement[parent[0]] || replacement;
               }
             }
-            // Check type of replacement and assign accordingly
+            // Check type of replacement and assign accordingly. The value is returned from a
+            // function so that `$&`, `$$`, `$'` and `` $` `` in it are inserted literally rather
+            // than read as replacement patterns.
             if (typeof replacement === 'string' || typeof replacement === 'number') {
               // If replacement is a string, perform the replace
-              resolvedValue = resolvedValue.replace(variable, String(replacement));
+              resolvedValue = resolvedValue.replace(variable, () => String(replacement));
             } else {
               // If replacement is an object or an array, assign the whole value to resolvedValue
-              resolvedValue = resolvedValue.replace(variable, JSON.stringify(replacement));
+              resolvedValue = resolvedValue.replace(variable, () => JSON.stringify(replacement));
             }
           }
           if (parent && key !== null) {

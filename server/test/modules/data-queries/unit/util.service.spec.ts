@@ -100,6 +100,21 @@ describe('DataQueriesUtilService', () => {
       });
     });
 
+    it('should insert values containing $ replacement patterns literally', async () => {
+      const object = {
+        key: "SELECT * FROM users WHERE name = '{{name}}' AND note = '{{note}}'",
+      };
+      const options = {
+        '{{name}}': "a$$b$&c$'d$`e",
+        '{{note}}': { text: 'x$&y' },
+      };
+      const result = await service.parseQueryOptions(object, options, 'org-id');
+
+      expect(result).toEqual({
+        key: "SELECT * FROM users WHERE name = 'a$$b$&c$'d$`e' AND note = '{\"text\":\"x$&y\"}'",
+      });
+    });
+
     it('should replace newlines with spaces', async () => {
       const object = {
         key: 'Hello\nWorld',
