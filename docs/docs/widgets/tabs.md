@@ -90,6 +90,8 @@ Following actions of Tabs component can be controlled using the component specif
 | <div style={{ width:"100px"}}> Variables </div>   | <div style={{ width:"100px"}}> Description </div> | <div style={{ width:"135px"}}> How To Access </div> |
 |:----------- |:----------- |:--------- |
 | currentTab | This variable holds the id of the current tab selected on the Tabs component. | Access the value dynamically using JS: `{{components.tabs1.currentTab}}`|
+| previousTab | This variable holds the id of the tab that was selected before the last tab switch. Use it with `currentTab` in an **On tab switch** event to act only on a switch to or from a particular tab. | Access the value dynamically using JS: `{{components.tabs1.previousTab}}`|
+| previousTabTitle | This variable holds the title of the tab that was selected before the last tab switch. | Access the value dynamically using JS: `{{components.tabs1.previousTabTitle}}`|
 
 </div>
 

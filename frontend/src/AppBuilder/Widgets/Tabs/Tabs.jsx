@@ -186,6 +186,12 @@ export const Tabs = function Tabs({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTab, parsedScrollToTopOnTabSwitch]);
 
+  // The tab being left, so an On tab switch handler can tell where the user came from
+  const previousTabVariables = () => ({
+    previousTab: currentTab,
+    previousTabTitle: tabItems.find((tab) => tab.id === currentTab)?.title,
+  });
+
   useEffect(() => {
     const exposedVariables = {
       setTab: async function (id) {
@@ -194,6 +200,7 @@ export const Tabs = function Tabs({
           setExposedVariables({
             currentTab: id,
             currentTabTitle: tabItems.find((tab) => tab.id === id)?.title,
+            ...previousTabVariables(),
           });
           fireEvent('onTabSwitch');
           setSelectedComponents([]);
@@ -392,6 +399,7 @@ export const Tabs = function Tabs({
                       setExposedVariables({
                         currentTab: tab.id,
                         currentTabTitle: tab.title,
+                        ...previousTabVariables(),
                       });
                     }
                     fireEvent('onTabSwitch');

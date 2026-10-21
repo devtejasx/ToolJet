@@ -393,6 +393,8 @@ export const tabsConfig = {
   exposedVariables: {
     currentTab: '',
     currentTabTitle: '',
+    previousTab: '',
+    previousTabTitle: '',
     isVisible: true,
     isDisabled: false,
     isLoading: false,
