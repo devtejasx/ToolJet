@@ -57,6 +57,7 @@ You can add a Tooltip to the component in string format. Once you pass a value i
 | <div style={{ width:"100px"}}> Property </div> | <div style={{ width:"150px"}}> Description </div> | <div style={{ width:"250px"}}> Configuration Options </div>|
 |:----------------|:------------|:--------------|
 | Background        | Sets the background color of the container.                                                   | Select the color or click on **fx** and input code that programmatically returns a Hex color code.          |
+| Background image  | Shows an image behind the container's components, scaled to cover the container.              | Enter an image URL or data URL, e.g. `https://example.com/banner.png` or `{{components.filepicker1.file[0].dataURL}}`. |
 | Header    | Sets the background color of the header.                                                       | Select the color or click on **fx** and input code that programmatically returns a Hex color code.          |
 | Header height      | Sets the height of the header within the component.                                     | Enter a number or click on **fx** and input a number programmatically using code.          |
 | Border radius      | Sets the radius of the component.                                     | Enter a number or click on **fx** and input a number programmatically using code.          |

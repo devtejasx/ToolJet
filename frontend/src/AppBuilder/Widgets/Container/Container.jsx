@@ -78,6 +78,13 @@ export const Container = ({
 
   const computedStyles = {
     backgroundColor: contentBgColor.backgroundColor,
+    // An image URL (or data URL) shown over the background colour, scaled to fill the container
+    ...(styles.backgroundImage && {
+      backgroundImage: `url(${JSON.stringify(styles.backgroundImage)})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    }),
     borderRadius: borderRadius ? parseFloat(borderRadius) : 0,
     border: `${SUBCONTAINER_CANVAS_BORDER_WIDTH}px solid ${borderColor}`,
     ...(isDynamicHeightEnabled && { minHeight: `${height}px` }),

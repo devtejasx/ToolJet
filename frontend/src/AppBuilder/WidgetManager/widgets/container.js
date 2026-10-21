@@ -131,6 +131,15 @@ export const containerConfig = {
       },
       accordian: 'container',
     },
+    backgroundImage: {
+      type: 'code',
+      displayName: 'Background image',
+      validation: {
+        schema: { type: 'string' },
+        defaultValue: '',
+      },
+      accordian: 'container',
+    },
     headerDividerColor: {
       type: 'colorSwatches',
       displayName: 'Divider',
@@ -210,6 +219,7 @@ export const containerConfig = {
     events: [],
     styles: {
       backgroundColor: { value: 'var(--cc-surface1-surface)' },
+      backgroundImage: { value: '' },
       headerBackgroundColor: { value: 'var(--cc-surface1-surface)' },
       headerDividerColor: { value: 'var(--cc-weak-border)' },
       borderRadius: { value: '6' },
