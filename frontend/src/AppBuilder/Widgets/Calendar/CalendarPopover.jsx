@@ -32,6 +32,8 @@ export const CalendarEventPopover = function ({
       !event.target.closest('.editor-sidebar') &&
       !event.target.closest('.left-sidebar-item ') &&
       !event.target.closest('.right-sidebar .left-sidebar-inspector') && // Right sidebar toggle button for adding components
+      // A modal placed in the popover renders outside it (in the canvas), but clicks in it belong to the popover
+      !event.target.closest('.modal') &&
       !isMoveableControlClicked(event)
     ) {
       popoverClosed();
