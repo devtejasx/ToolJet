@@ -13,9 +13,10 @@ import { shallow } from 'zustand/shallow';
  * @param {number} config.maxLength - Maximum length
  * @param {string} config.customRule - Custom validation rule
  * @param {string} value - The value to validate
+ * @param {Object} [customResolveObjects] - Extra variables for the custom rule, e.g. `{ rowData }`
  * @returns {{ isValid: boolean, validationError: string }}
  */
-export const useStringValidation = (config, value) => {
+export const useStringValidation = (config, value, customResolveObjects = {}) => {
   const validateWidget = useStore((state) => state.validateWidget, shallow);
 
   return validateWidget({
@@ -26,7 +27,7 @@ export const useStringValidation = (config, value) => {
       customRule: { value: config?.customRule },
     },
     widgetValue: value,
-    customResolveObjects: { cellValue: value },
+    customResolveObjects: { cellValue: value, ...customResolveObjects },
   });
 };
 
@@ -40,9 +41,10 @@ export const useStringValidation = (config, value) => {
  * @param {number} config.maxValue - Maximum value
  * @param {string} config.customRule - Custom validation rule
  * @param {number} value - The value to validate
+ * @param {Object} [customResolveObjects] - Extra variables for the custom rule, e.g. `{ rowData }`
  * @returns {{ isValid: boolean, validationError: string }}
  */
-export const useNumberValidation = (config, value) => {
+export const useNumberValidation = (config, value, customResolveObjects = {}) => {
   const validateWidget = useStore((state) => state.validateWidget, shallow);
 
   return validateWidget({
@@ -52,7 +54,7 @@ export const useNumberValidation = (config, value) => {
       customRule: { value: config?.customRule },
     },
     widgetValue: value,
-    customResolveObjects: { cellValue: value },
+    customResolveObjects: { cellValue: value, ...customResolveObjects },
   });
 };
 

@@ -490,3 +490,5 @@ Enter the number for the maximum length of characters allowed.
 ### Custom rule
 
 If the condition is true, the validation passes, otherwise return a string that should be displayed as the error message. For example: `{{components.table1.selectedRow.id==1&&"This row can't be deleted"}}`
+
+The rule can read the cell's value as `cellValue` and the rest of its row as `rowData`. For example: `{{rowData.status === 'closed' ? 'Closed orders cannot change' : true}}`

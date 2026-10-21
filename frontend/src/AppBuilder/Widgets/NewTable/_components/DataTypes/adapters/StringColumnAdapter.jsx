@@ -34,7 +34,9 @@ export const StringColumn = ({
   const [isEditing, setIsEditing] = useState(false);
   const cellTextColor = useTextColor(id, textColor);
 
-  const { isValid, validationError } = useStringValidation(column, cellValue);
+  // rowData lets a custom rule check other cells of the row; it carries this cell's current value
+  const rowData = { ...row?.original, [column.key || column.name]: cellValue };
+  const { isValid, validationError } = useStringValidation(column, cellValue, { rowData });
   useValidationStyle(id, row, validationError);
 
   const handleChange = (newValue) => {

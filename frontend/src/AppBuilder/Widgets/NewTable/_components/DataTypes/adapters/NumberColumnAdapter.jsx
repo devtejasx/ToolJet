@@ -40,7 +40,8 @@ export const NumberColumn = ({
       },
     },
     widgetValue: cellValue,
-    customResolveObjects: { cellValue },
+    // rowData lets a custom rule check other cells of the row; it carries this cell's current value
+    customResolveObjects: { cellValue, rowData: { ...row?.original, [column.key || column.name]: cellValue } },
   });
 
   const { isValid, validationError } = validationData;

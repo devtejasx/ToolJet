@@ -33,7 +33,8 @@ export const TextColumn = ({
       customRule: { value: column.customRule },
     },
     widgetValue: cellValue,
-    customResolveObjects: { cellValue },
+    // rowData lets a custom rule check other cells of the row; it carries this cell's current value
+    customResolveObjects: { cellValue, rowData: { ...cell?.row?.original, [column.key || column.name]: cellValue } },
   });
 
   const handleChange = (newValue) => {
