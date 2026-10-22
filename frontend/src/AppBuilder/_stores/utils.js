@@ -110,7 +110,8 @@ export const resolveDynamicValues = (
               reservedKeyword,
               isJsCode
             );
-            resolvedValue = resolvedValue.replace(variable, resolvedCode ?? '');
+            // A replacer function keeps `$&`, `$$` etc. in the resolved value literal
+            resolvedValue = resolvedValue.replace(variable, () => resolvedCode ?? '');
           });
         } else {
           const variableToResolve = removeNestedDoubleCurlyBraces(code);
@@ -122,7 +123,8 @@ export const resolveDynamicValues = (
             reservedKeyword,
             isJsCode
           );
-          resolvedValue = typeof resolvedCode === 'string' ? resolvedValue.replace(code, resolvedCode) : resolvedCode;
+          resolvedValue =
+            typeof resolvedCode === 'string' ? resolvedValue.replace(code, () => resolvedCode) : resolvedCode;
         }
         return resolvedValue;
       } catch (error) {

@@ -219,13 +219,14 @@ const resolveMultiDynamicReferences = (code, lookupTable = {}, queryHasJSCode, c
         const variableToResolve = removeNestedDoubleCurlyBraces(variable);
         const [resolvedCode] = resolveCode(variableToResolve, customResolvers, true, [], true);
 
-        resolvedValue = resolvedValue.replace(variable, resolvedCode);
+        // A replacer function keeps `$&`, `$$` etc. in the resolved value literal
+        resolvedValue = resolvedValue.replace(variable, () => resolvedCode);
       });
     } else {
       const variableToResolve = removeNestedDoubleCurlyBraces(code);
       const [resolvedCode] = resolveCode(variableToResolve, customResolvers, true, [], true);
 
-      resolvedValue = typeof resolvedCode === 'string' ? resolvedValue.replace(code, resolvedCode) : resolvedCode;
+      resolvedValue = typeof resolvedCode === 'string' ? resolvedValue.replace(code, () => resolvedCode) : resolvedCode;
     }
 
     return resolvedValue;
