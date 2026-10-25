@@ -1,4 +1,5 @@
 import React from 'react';
+import { escapeRegExp } from 'lodash';
 
 export const HighLightSearch = React.memo(({ text, searchTerm }) => {
   if (text === '') return null;
@@ -6,7 +7,7 @@ export const HighLightSearch = React.memo(({ text, searchTerm }) => {
   if (searchTerm === '' || !text.toString()?.toLowerCase().includes(searchTerm?.toLowerCase()))
     return <span>{text}</span>;
 
-  const parts = String(text).split(new RegExp(`(${searchTerm})`, 'gi'));
+  const parts = String(text).split(new RegExp(`(${escapeRegExp(searchTerm)})`, 'gi'));
 
   return (
     <span>
